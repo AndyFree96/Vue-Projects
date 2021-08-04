@@ -2,9 +2,15 @@
   <div id="app">
     <h1>To-Do List</h1>
     <todo-form @todo-added="addTodo"></todo-form>
+    <h2 id="list-summary">{{ listSummary }}</h2>
     <ul aria-labelledby="list-summary" class="stack-large">
       <li v-for="item in TodoItems" :key="item.id">
-        <todo-item :label="item.label" :done="item.done" :id="item.id"></todo-item>
+        <todo-item
+          :label="item.label"
+          :done="item.done"
+          :id="item.id"
+          @checkbox-changed="updateDoneStatus(item.id)"
+        ></todo-item>
       </li>
     </ul>
   </div>
@@ -13,7 +19,7 @@
 <script>
 import TodoItem from "./components/TodoItem.vue";
 import uniqueId from "lodash.uniqueid";
-import TodoForm from './components/TodoForm.vue';
+import TodoForm from "./components/TodoForm.vue";
 
 export default {
   name: "App",
@@ -24,18 +30,34 @@ export default {
   data() {
     return {
       TodoItems: [
-        { id: uniqueId("todo-"), label: "Reada book", done: false },
+        { id: uniqueId("todo-"), label: "Read a book", done: false },
         { id: uniqueId("todo-"), label: "Watch TV", done: false },
         { id: uniqueId("todo-"), label: "Play computer games", done: true },
       ],
     };
   },
   methods: {
-    addTodo(todoLabel){
+    addTodo(todoLabel) {
       console.log(todoLabel);
-      this.TodoItems.push({id: uniqueId("todo-"), label: todoLabel, done: false});
-    }
-  }
+      this.TodoItems.push({
+        id: uniqueId("todo-"),
+        label: todoLabel,
+        done: false,
+      });
+    },
+    updateDoneStatus(toDoId) {
+      const toDoToUpdate = this.TodoItems.find((item) => item.id === toDoId);
+      toDoToUpdate.done = !toDoToUpdate.done;
+    },
+  },
+  computed: {
+    listSummary() {
+      const numberFinishedItems = this.TodoItems.filter(
+        (item) => item.done
+      ).length;
+      return `${numberFinishedItems} out of ${this.TodoItems.length} items completed`;
+    },
+  },
 };
 </script>
 

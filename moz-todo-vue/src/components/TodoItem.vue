@@ -1,6 +1,7 @@
 <template>
     <div class="custom-checkbox">
-        <input class="checkbox" type="checkbox" :id="id" :checked="isDone">
+        <input class="checkbox" type="checkbox" :id="id" :checked="isDone"
+        @change="$emit('checkbox-changed')">
         <label class="checkbox-label" for="todo-item">{{ label }} </label>
     </div>
 </template>
