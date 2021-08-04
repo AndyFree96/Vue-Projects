@@ -2,20 +2,32 @@
   <div id="app">
     <h1>To-Do List</h1>
     <ul>
-      <li><todo-item label="My ToDo item" :done="false"></todo-item></li>
+      <li v-for="item in TodoItems" :key="item.id">
+        <todo-item :label="item.label" :done="item.done" :id="item.id"></todo-item>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import TodoItem from './components/TodoItem.vue'
+import TodoItem from "./components/TodoItem.vue";
+import uniqueId from "lodash.uniqueid";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    TodoItem
-  }
-}
+    TodoItem,
+  },
+  data() {
+    return {
+      TodoItems: [
+        { id: uniqueId("todo-"), label: "Reada book", done: false },
+        { id: uniqueId("todo-"), label: "Watch TV", done: false },
+        { id: uniqueId("todo-"), label: "Play computer games", done: true },
+      ],
+    };
+  },
+};
 </script>
 
 <style>
