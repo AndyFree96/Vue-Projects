@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notebook</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/marked"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <el-container id="notebook">
+        <el-aside width="200px">
+            <!-- 笔记列表 -->
+        </el-aside>
+        <el-main>
+            <el-input type="textarea" v-model="content" :rows="33"></el-input>
+        </el-main>
+        <el-main>
+            <div class="padding" v-html="notePreview"></div>
+        </el-main>
+    </el-container>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
