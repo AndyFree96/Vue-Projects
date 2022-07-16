@@ -1,34 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notebook</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.4"></script> -->
+    <script src="./vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 
-<body>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/marked"></script>
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <div id="notebook">
+      <aside class="side-bar">
+        <div class="toolbar">
+          <button @click="addNote" :title="addButtonTitle">
+            <i class="material-icons"></i>Add note
+          </button>
+        </div>
+        <div class="notes">
+          <!-- 笔记列表 -->
+          <div
+            class="note"
+            :class="{selected: note === selectedNote}"
+            @click="selectNote(note)"
+            v-for="note of sortedNotes"
+          >
+            <i class="icon material-icons" v-if="note.favorite">star</i>
+            {{ note.title }}
+          </div>
+        </div>
+      </aside>
 
-    <el-container id="notebook">
-        <el-aside width="200px">
-            <!-- 笔记列表 -->
-        </el-aside>
-        <el-main>
-            <el-input type="textarea" v-model="content" :rows="33"></el-input>
-        </el-main>
-        <el-main>
-            <div class="padding" v-html="notePreview"></div>
-        </el-main>
-    </el-container>
+      <template v-if="selectedNote">
+        <section class="main">
+          <div class="toolbar">
+            <!-- 工具栏 -->
+            <input
+              type="text"
+              v-model="selectedNote.title"
+              placeholder="Note title"
+            />
+            <button @click="favoriteNote" title="Favorite note">
+              <i class="material-icons"
+                >{{ selectedNote.favorite ? 'star' : 'star_border' }}</i
+              >
+            </button>
+            <button @click="removeNote" title="Remove note">
+              <i class="material-icons">delete</i>
+            </button>
+          </div>
+          <textarea v-model="selectedNote.content"></textarea>
+          <div class="toolbar status-bar">
+            <!-- 状态栏 -->
+            <span class="date">
+              <span class="label">Created</span>
+              <span class="value">{{ selectedNote.created | date}}</span>
+            </span>
+            <span class="lines">
+              <span class="label">Lines</span>
+              <span class="value">{{ linesCount }} </span>
+            </span>
+            <span class="words">
+              <span class="label">Words</span>
+              <span class="value">{{ wordsCount }}</span>
+            </span>
+            <span class="characters">
+              <span class="label">Characters</span>
+              <span class="value">{{ charactersCount }}</span>
+            </span>
+          </div>
+        </section>
+        <aside class="preview" v-html="notePreview"></aside>
+      </template>
+    </div>
 
     <script src="script.js"></script>
-</body>
-
+  </body>
 </html>
